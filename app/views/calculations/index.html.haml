@@ -1,0 +1,48 @@
+.row
+  .col-sm-6
+    = form_tag calculations_path, method: :get do
+      .form-group
+        = label_tag :items_count, 'Кількість Товару'
+        = number_field_tag :items_count, params[:items_count], class: 'form-control', required: true
+      .form-group
+        = label_tag :using_years, 'Строк Носіння'
+        = number_field_tag :using_years, params[:using_years], class: 'form-control', required: true
+      .form-group
+        = label_tag :beginning_date, 'Початок служби'
+        = text_field_tag :beginning_date, params[:beginning_date], class: 'form-control', required: true
+      .form-group
+        = label_tag :last_date, 'Остання дата отримання'
+        = text_field_tag :last_date, params[:last_date], class: 'form-control', required: true
+      .form-group
+        = label_tag :end_date, 'Дата звільнення'
+        = text_field_tag :end_date, params[:end_date], class: 'form-control', required: true
+      .form-group
+        = label_tag :price, 'Ціна'
+        = text_field_tag :price, params[:price], class: 'form-control'
+
+      .form-group
+        = submit_tag 'Обчислити', class: 'btn btn-success'
+  - if params.key?(:items_count)
+    .col-sm-6
+      .alert.alert-success
+        %h3 Всі роки від початку служби
+
+        - @report.all_years.each do |result|
+          %p
+            Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}; Кількість тавору: #{@report.items_count}
+
+        %h5.padder-h-sm Загальна кількість товарів за всі роки: #{@report.total_overall_years}
+        %h6 Ціна до виплати: #{@report.total_price.round(2)} грн.
+
+      .alert.alert-warning
+        %h3 Роки нарахування з 14/08/2013
+
+        - @report.years_with_money.each do |result|
+          .row
+            .col-sm-6
+              Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}
+            .col-sm-6
+              Кількість: #{@report.items_count}
+
+        %h5.padder-h-sm Загальна кількість товарів до оплати: #{@report.total_items_count}
+        %h6 Ціна до виплати: #{@report.total_price_to_pay.round(2)} грн.

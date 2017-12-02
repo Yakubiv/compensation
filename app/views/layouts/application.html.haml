@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %title Речмайно
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    .container
+      .header.clearfix.padder-h
+        %nav
+          %ul.nav.nav-pills.float-right
+            %li.nav-item
+              %a.nav-link.active{:href => "#"}
+                Обрахування
+                %span.sr-only (current)
+
+        %h3.text-muted Речмайно
+      = yield
+
+      %footer.footer
+        %p © Company 2017
