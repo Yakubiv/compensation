@@ -40,9 +40,10 @@ class ReturnCalculation
   end
 
   def years_with_money
-    all_years.select { |y| y[:date] > RETURN_START && y[:date] < end_date }.each do |date|
+    all_years.select { |y| y[:date] > RETURN_START && y[:date] < end_date }.map do |date|
       @total_items_count += items_count.to_i
-      { date: date }
+      status = date.fetch(:date).year == last_date.year ? 'took' : 'free'
+      { date: date.fetch(:date), status: status }
     end
   end
 
