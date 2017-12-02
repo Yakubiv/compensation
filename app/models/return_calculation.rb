@@ -42,7 +42,7 @@ class ReturnCalculation
   def years_with_money
     all_years.select { |y| y[:date] > RETURN_START && y[:date] < end_date }.map do |date|
       @total_items_count += items_count.to_i
-      status = date.fetch(:date).year == last_date.year ? 'took' : 'free'
+      status = date.fetch(:date).year == last_date.year ? 'отримав' : 'не отримав'
       { date: date.fetch(:date), status: status }
     end
   end
