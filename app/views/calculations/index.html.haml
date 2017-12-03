@@ -26,21 +26,6 @@
       .form-group
         = submit_tag 'Обчислити', class: 'btn btn-success'
   - if params.key?(:items_count)
-    .alert.alert-warning
-      %h3 Роки нарахування з 14/08/2013
-
-      - @report.years_with_money.each do |result|
-        .row{ class: "#{result.fetch(:status) == 'отримав' ? 'text-danger' : ''}" }
-          .col-sm-4
-            Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}
-          .col-sm-4
-            Кількість: #{@report.items_count}
-          .col-sm-4
-            = result.fetch(:status)
-
-      %h5.padder-h-sm Загальна кількість товарів до оплати: #{@report.total_items_count}
-      %h6 Ціна до виплати: #{@report.total_price_to_pay.round(2)} грн.
-
     .col-sm-6
       .alert.alert-success
         %h3 Всі роки від початку служби
@@ -51,3 +36,17 @@
 
         %h5.padder-h-sm Загальна кількість товарів за всі роки: #{@report.total_overall_years}
         %h6 Ціна до виплати: #{@report.total_price.round(2)} грн.
+      .alert.alert-warning
+        %h3 Роки нарахування з 14/08/2013
+
+        - @report.years_with_money.each do |result|
+          .row{ class: "#{result.fetch(:status) == 'отримав' ? 'text-danger' : ''}" }
+            .col-sm-4
+              Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}
+            .col-sm-4
+              Кількість: #{@report.items_count}
+            .col-sm-4
+              = result.fetch(:status)
+
+        %h5.padder-h-sm Загальна кількість товарів до оплати: #{@report.total_items_count}
+        %h6 Ціна до виплати: #{@report.total_price_to_pay.round(2)} грн.
