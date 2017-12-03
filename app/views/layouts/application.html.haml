@@ -10,13 +10,15 @@
       .header.clearfix.padder-h
         %nav
           %ul.nav.nav-pills.float-right
-            %li.nav-item
-              %a.nav-link.active{:href => "#"}
-                Обрахування
-                %span.sr-only (current)
-
+            - if user_signed_in?
+              %li.nav-item
+                %a.nav-link.active{:href => "#"}
+                  Обрахування
+                  %span.sr-only (current)
+              %li.nav-item
+                = link_to('Вийти', destroy_user_session_path, method: :delete, class: 'nav-link')
         %h3.text-muted Речмайно
       = yield
 
       %footer.footer
-        %p © Company 2017
+        %p © Якубів 2017
