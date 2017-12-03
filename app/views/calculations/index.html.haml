@@ -5,7 +5,7 @@
         = label_tag :items_count, 'Кількість Товару'
         = number_field_tag :items_count, params[:items_count], class: 'form-control', required: true
       .form-group
-        = label_tag :using_years, 'Строк Носіння'
+        = label_tag :using_years, 'Роки носіння/користування'
         = number_field_tag :using_years, params[:using_years], class: 'form-control', required: true
       .form-group
         = label_tag :last_date, 'Остання дата отримання'
@@ -26,6 +26,21 @@
       .form-group
         = submit_tag 'Обчислити', class: 'btn btn-success'
   - if params.key?(:items_count)
+    .alert.alert-warning
+      %h3 Роки нарахування з 14/08/2013
+
+      - @report.years_with_money.each do |result|
+        .row{ class: "#{result.fetch(:status) == 'отримав' ? 'text-danger' : ''}" }
+          .col-sm-4
+            Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}
+          .col-sm-4
+            Кількість: #{@report.items_count}
+          .col-sm-4
+            = result.fetch(:status)
+
+      %h5.padder-h-sm Загальна кількість товарів до оплати: #{@report.total_items_count}
+      %h6 Ціна до виплати: #{@report.total_price_to_pay.round(2)} грн.
+
     .col-sm-6
       .alert.alert-success
         %h3 Всі роки від початку служби
@@ -36,18 +51,3 @@
 
         %h5.padder-h-sm Загальна кількість товарів за всі роки: #{@report.total_overall_years}
         %h6 Ціна до виплати: #{@report.total_price.round(2)} грн.
-
-      .alert.alert-warning
-        %h3 Роки нарахування з 14/08/2013
-
-        - @report.years_with_money.each do |result|
-          .row{ class: "#{result.fetch(:status) == 'отримав' ? 'text-danger' : ''}" }
-            .col-sm-4
-              Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}
-            .col-sm-4
-              Кількість: #{@report.items_count}
-            .col-sm-4
-              = result.fetch(:status)
-
-        %h5.padder-h-sm Загальна кількість товарів до оплати: #{@report.total_items_count}
-        %h6 Ціна до виплати: #{@report.total_price_to_pay.round(2)} грн.
