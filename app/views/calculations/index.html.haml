@@ -32,7 +32,7 @@
 
         - @report.all_years.each do |result|
           %p
-            Дата: #{result.fetch(:date).strftime('%d/%m/%Y')}; Кількість тoвару: #{@report.items_count}
+            Дата: #{result.strftime('%d/%m/%Y')}; Кількість тoвару: #{@report.items_count}
 
         %h5.padder-h-sm Загальна кількість товарів за всі роки: #{@report.total_overall_years}
         %h6 Ціна до виплати: #{@report.total_price.round(2)} грн.

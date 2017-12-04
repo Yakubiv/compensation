@@ -16,11 +16,14 @@ class ReturnCalculation
 
   def all_years
     return [] unless beginning_date
-    (years_range.first[:index]..years_range.last[:index]).step(using_years.to_i).map do |year_number|
-      year = years_range[year_number]
-      @total_overall_years += items_count.to_i
-      { date: Date.parse("#{usable_date.day}/#{usable_date.month}/#{year[:year].year}") }
-    end
+    (index_of_first_year_of_work..index_of_last_year_of_work).step(using_years).map do |year_index|
+      year = years_range[year_index]
+
+      if year[:year] < end_date
+        @total_overall_years += items_count.to_i
+        year[:year]
+      end
+    end.compact
   end
 
   def usable_date
@@ -40,16 +43,25 @@ class ReturnCalculation
   end
 
   def years_with_money
-    all_years.select { |y| y[:date] > RETURN_START && y[:date] < end_date }.map do |date|
+    all_years.select { |year| year > RETURN_START && year < end_date }.map do |date|
       @total_items_count += items_count.to_i
-      status = date.fetch(:date).year == last_date.year ? 'отримав' : 'не отримав'
-      { date: date.fetch(:date), status: status }
+      status = date.year == last_date.year ? 'отримав' : 'не отримав'
+
+      { date: date, status: status }
     end
+  end
+
+  def index_of_first_year_of_work
+    years_range.first[:index]
+  end
+
+  def index_of_last_year_of_work
+    years_range.last[:index]
   end
 
   def years_range
     (beginning_date..end_date).group_by(&:beginning_of_year).map.with_index do |(y, _), index|
-      { year: y, index: index }
+      { year: Date.parse("#{usable_date.day}/#{usable_date.month}/#{y.year}"), index: index }
     end
   end
 end
