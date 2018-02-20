@@ -61,7 +61,7 @@ class ReturnCalculation
 
   def years_range
     (beginning_date..end_date).group_by(&:beginning_of_year).map.with_index do |(y, _), index|
-      { year: Date.parse("#{usable_date.day}/#{usable_date.month}/#{y.year}"), index: index }
+      { year: Date.parse("#{beginning_date.day}/#{beginning_date.month}/#{y.year}"), index: index }
     end
   end
 end
